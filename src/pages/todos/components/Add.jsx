@@ -1,13 +1,16 @@
 import { useRef } from "react";
-import { useTodoContext } from "./context";
+import { useCreateTodoMutation } from "../services/todosApi";
 
-export default () => {
-  const { addTodo } = useTodoContext();
+export default function Add() {
   const inputRef = useRef();
+
+  const [addTodo] = useCreateTodoMutation();
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const title = inputRef.current.value.trim();
     if (!title) return;
+
     addTodo({
       title,
       completed: false,
@@ -30,4 +33,4 @@ export default () => {
       </div>
     </form>
   );
-};
+}

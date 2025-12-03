@@ -1,7 +1,11 @@
-import { useTodoContext } from "./context";
+import {
+  useDeleteTodoMutation,
+  useUpdateTodoMutation,
+} from "../services/todosApi";
 
-export default ({ todo }) => {
-  const { edit, setEdit, updateTodo, deleteTodo } = useTodoContext();
+export default function Todo({ todo, edit, setEdit }) {
+  const [updateTodo] = useUpdateTodoMutation();
+  const [deleteTodo] = useDeleteTodoMutation();
 
   return (
     <li className="list-group-item list-group-item-light">
@@ -39,23 +43,24 @@ export default ({ todo }) => {
           </div>
         </>
       ) : (
-        <Edit todo={todo} />
+        <Edit todo={todo} setEdit={setEdit} />
       )}
     </li>
   );
-};
+}
 
-const Edit = ({ todo }) => {
-  const { updateTodo, setEdit } = useTodoContext();
+const Edit = ({ todo, setEdit }) => {
+  const [updateTodo] = useUpdateTodoMutation();
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const title = e.target.edit.value.trim();
     if (!title) return;
     if (title === todo.title) {
       setEdit();
     } else {
-      todo.title = title;
-      updateTodo(todo);
+      updateTodo({ ...todo, title });
       setEdit();
     }
   };
