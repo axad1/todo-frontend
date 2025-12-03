@@ -16,10 +16,10 @@ const getTodos = async (dispatch) => {
 
 const addTodo = async (dispatch, todo) => {
   try {
-    const id = await fetch("/todo", "POST", todo);
+    const newTodo = await fetch("/todo", "POST", todo);
     dispatch({
       type: actions.ADD,
-      payload: { id, ...todo },
+      payload: newTodo,
     });
     toast.success("Added successfully");
   } catch (error) {
